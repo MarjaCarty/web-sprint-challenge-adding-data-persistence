@@ -13,15 +13,14 @@ module.exports = {
   },
   createTask(task) {
     return db("tasks")
-      .insert(task)
-      .then(([id]) => {
+      .insert(task, "id")
+      .then((id) => {
         return db("tasks")
           .where("id", id)
-          .then((res) =>
-            res.map((item) => {
-              return { ...item, completed: item.completed ? true : false };
-            })
-          );
+          .first()
+          .then((res) => {
+            return { ...res, completed: res.completed ? true : false };
+          });
       });
   },
 };
