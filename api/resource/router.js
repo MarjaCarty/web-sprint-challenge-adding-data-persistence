@@ -4,6 +4,14 @@ const Resource = require("./model");
 
 const router = express.Router();
 
+const validateResource = (req, res, next) => {
+  if (!req.body.name) {
+    res.status(400).json({ message: "missing resource data" });
+  } else {
+    next();
+  }
+};
+
 router.get("/", async (req, res) => {
   try {
     const resources = await Resource.getResources();
@@ -13,7 +21,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateResource, async (req, res) => {
   try {
     const newResource = await Resource.createResource(req.body);
     res.status(201).json(newResource);

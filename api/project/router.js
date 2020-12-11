@@ -4,6 +4,14 @@ const Project = require("./model");
 
 const router = express.Router();
 
+const validateProject = (req, res, next) => {
+  if (!req.body.name) {
+    res.status(400).json({ message: "missing project data" });
+  } else {
+    next();
+  }
+};
+
 router.get("/", async (req, res) => {
   try {
     const projects = await Project.getProjects();
@@ -13,7 +21,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateProject, async (req, res) => {
   try {
     const newProject = await Project.createProject(req.body);
     res.status(201).json(newProject);
