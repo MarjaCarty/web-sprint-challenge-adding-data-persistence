@@ -3,7 +3,11 @@ const db = require("../../data/dbConfig");
 
 module.exports = {
   getResources() {
-    return db("resources");
+    return db("resources").then((res) =>
+      res.map((item) => {
+        return { ...item, completed: item.completed ? true : false };
+      })
+    );
   },
   createResource(resource) {
     return db("resources")
