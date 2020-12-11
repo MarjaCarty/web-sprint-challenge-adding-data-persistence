@@ -9,7 +9,7 @@ module.exports = {
     return db("resources")
       .insert(resource)
       .then(([id]) => {
-        return db("resources");
+        return db("resources").where("id", id).first();
       });
   },
 };
