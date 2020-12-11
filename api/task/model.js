@@ -11,7 +11,7 @@ module.exports = {
     return db("tasks")
       .insert(task)
       .then(([id]) => {
-        return db("tasks").where("task_id", id).first();
+        return db("tasks").where("id", id).first();
       });
   },
 };
