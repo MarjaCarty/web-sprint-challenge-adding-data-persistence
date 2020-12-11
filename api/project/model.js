@@ -13,7 +13,11 @@ module.exports = {
     return db("projects")
       .insert(project)
       .then(([id]) => {
-        return db("projects");
+        return db("projects").then((res) =>
+          res.map((item) => {
+            return { ...item, completed: item.completed ? true : false };
+          })
+        );
       });
   },
 };
